@@ -9,6 +9,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STHeightRule;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -142,7 +143,7 @@ public class TemplateGenerator {
         table.setCellMargins(0, 0, 0, 0);
         //create first row
         XWPFTableRow tableRowOne = table.getRow(0);
-
+        setTableRowFixedHeight(tableRowOne);
 
         XWPFTableCell col1Cell = tableRowOne.getCell(0);
         col1Cell.setWidth("11.5%");
@@ -156,6 +157,8 @@ public class TemplateGenerator {
 
         //create second row
         XWPFTableRow tableRowTwo = table.createRow();
+        setTableRowFixedHeight(tableRowTwo);
+
 
         tableRowTwo.getCell(0).setText("");
         tableRowTwo.getCell(1).setText(getFormattedAmountsInWords(template.getAmountInWords()));
@@ -163,6 +166,8 @@ public class TemplateGenerator {
 
         //create third row
         XWPFTableRow tableRowThree = table.createRow();
+        setTableRowFixedHeight(tableRowThree);
+
 
         tableRowThree.getCell(0).setText("");
         tableRowThree.getCell(1).setText(getRemainingFormattedAmountsInWords(template.getAmountInWords()));
@@ -170,6 +175,8 @@ public class TemplateGenerator {
 
         //create fourth row
         XWPFTableRow tableRowFour = table.createRow();
+        setTableRowFixedHeight(tableRowFour);
+
 
         tableRowFour.getCell(0).setText("");
         tableRowFour.getCell(1).setText("");
@@ -177,11 +184,19 @@ public class TemplateGenerator {
 
         //create Fifth row
         XWPFTableRow tableRowFive = table.createRow();
+        setTableRowFixedHeight(tableRowFive);
+
 
         tableRowFive.getCell(0).setText("");
         tableRowFive.getCell(1).setText(template.getPayee());
         tableRowFive.getCell(2).setText("");
 
+    }
+
+    private static void setTableRowFixedHeight(XWPFTableRow tableRow) {
+        int twipsPerInch =  1440;
+        tableRow.setHeight((int)(twipsPerInch*2/10)); //set height 2/10 inch.
+        tableRow.getCtRow().getTrPr().getTrHeightArray(0).setHRule(STHeightRule.EXACT);
     }
 
 
